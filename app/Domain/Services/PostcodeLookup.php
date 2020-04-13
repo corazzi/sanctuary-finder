@@ -2,24 +2,29 @@
 
 namespace App\Domain\Services;
 
+use App\Domain\Models\Postcode;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Http;
 
 class PostcodeLookup
 {
-    private $endpoint = 'http://api.getthedata.com/postcode';
-
     private $postcode;
 
-    private $response;
+    private $data;
 
     private $valid = false;
 
-    public function __construct(string $postcode)
+    public function __construct(?string $postcode)
     {
-        $this->postcode = str_replace(' ', '', $postcode);
+        $this->postcode = strtoupper(
+            str_replace(' ', '', $postcode)
+        );
 
         $this->resolveIfValid();
+    }
+
+    public function isValid()
+    {
+        return $this->valid;
     }
 
     public function getQuery()
@@ -38,32 +43,36 @@ class PostcodeLookup
 
     private function validatePostcode()
     {
-        $this->valid = true;
-        return true;
+        return preg_match(
+            '/\b((?:(?:gir)|(?:[a-pr-uwyz])(?:(?:[0-9](?:[a-hjkpstuw]|[0-9])?)|(?:[a-hk-y][0-9](?:[0-9]|[abehmnprv-y])?))))( ?([0-9][abd-hjlnp-uw-z]{2}))?\b/i',
+            $this->postcode
+        );
     }
 
     private function resolve()
     {
-        $this->response = Http::get("{$this->endpoint}/{$this->postcode}")->json();
+        $this->data = Postcode::query()
+            ->where('postcode_no_space', $this->postcode)
+            ->orWhere('outcode', $this->postcode)
+            ->first();
+
+        if ($this->data !== null) {
+            $this->valid = true;
+        }
 
         return $this;
     }
 
-    public static function make(string $postcode)
+    public static function make(?string $postcode)
     {
         return new static($postcode);
-    }
-
-    public function isValid(): bool
-    {
-        return Arr::get($this->response, 'status') === 'match';
     }
 
     public function getLatLong(): array
     {
         return [
-            'lat' => Arr::get($this->response, 'data.latitude'),
-            'lng' => Arr::get($this->response, 'data.longitude'),
+            'lat' => Arr::get($this->data, 'latitude'),
+            'lng' => Arr::get($this->data, 'longitude'),
         ];
     }
 }

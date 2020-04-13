@@ -22,7 +22,6 @@ $factory->define(Sanctuary::class, function (Faker $faker) {
 
     $location = Arr::random($locations);
     $latLong = PostcodeLookup::make($location['postcode'])->getLatLong();
-    dump($latLong);
 
     return [
         'name' => $faker->city . ' ' . Arr::random(['Sanctuary', 'Haven', 'Rescue']),

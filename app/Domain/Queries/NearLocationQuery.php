@@ -20,6 +20,10 @@ class NearLocationQuery
 
     public function resolve()
     {
+        if (! $this->location->getQuery()) {
+            return $this->original;
+        }
+
         return $this->original->where(function (Builder $builder) {
             $builder->where('town', $this->location->getQuery());
 

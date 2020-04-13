@@ -28,6 +28,7 @@
                             class="px-4 py-3 w-full text-gray-800"
                             placeholder="Search for a city, town, or postcode"
                             autocomplete="off"
+                            value="{{ request('q') }}"
                         />
                         <button type="submit" class="submit"></button>
                     </div>
