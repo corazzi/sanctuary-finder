@@ -30,6 +30,18 @@
         </nav>
 
         @yield('content')
+
+        <footer class="flex flex-col items-center mt-16 mb-8">
+            <p class="text-sm text-gray-600">
+                Made with
+                <span class="text-xs text-red-700 mx-1">&hearts;</span>
+                for the animals by Ethan Scott &amp; Sacha Corazzi, and
+                <a href="{{ url('/contribute') }}" class="text-green-500 underline">you</a>
+            </p>
+            <p class="mt-2">
+                🐄🐖🐕🐈🐓🦃🐑🐇🦔🦆
+            </p>
+        </footer>
     </div>
 </body>
 </html>

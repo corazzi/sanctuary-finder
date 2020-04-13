@@ -3,13 +3,14 @@
 namespace App\Domain\Models;
 
 use App\Domain\Queries\NearLocationQuery;
+use App\Domain\Services\PostcodeLookup;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class Sanctuary extends Model
 {
     protected $casts = [
-        'social_media' => 'array'
+        'social_media' => 'array',
     ];
 
     public function scopeVegan(Builder $builder)
@@ -17,14 +18,19 @@ class Sanctuary extends Model
         return $builder->where('vegan', true);
     }
 
-    public function scopeNearLocation($query, $location, $radius)
+    public function scopeNearPostcode($query, PostcodeLookup $postcode, int $radius)
     {
-        return (
-            new NearLocationQuery($query, $location, $radius)
-        )->resolve();
+        if ($postcode->isValid()) {
+            $query->withinKilometers($postcode->getLatLong(), $radius);
+        } else {
+            $query->where('town', 'like', "%{$postcode->getQuery()}%");
+        }
+
+        return $query;
     }
 
-    public function scopeWithinKilometers($query, $location, $radius = 25) {
+    public function scopeWithinKilometers($query, $location, $radius = 25)
+    {
         $haversine = "(6371 * acos(cos(radians({$location['lat']}))
                      * cos(radians(sanctuaries.lat))
                      * cos(radians(sanctuaries.lng)
@@ -34,6 +40,7 @@ class Sanctuary extends Model
 
         return $query->select('*')
             ->selectRaw("{$haversine} AS distance")
-            ->whereRaw("{$haversine} < ?", [$radius]);
+            ->whereRaw("{$haversine} < ?", [$radius])
+            ->orderBy('distance', 'asc');
     }
 }

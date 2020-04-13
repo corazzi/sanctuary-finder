@@ -4,7 +4,7 @@
     @include('search.partials.header')
 
     @include('sanctuaries.list', [
-        'title' => 'Latest Sanctuaries',
+        'title' => 'Results',
         'sanctuaries' => $sanctuaries
     ])
 @endsection

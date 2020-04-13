@@ -9,6 +9,7 @@ require('./bootstrap');
 window.Vue = require('vue');
 
 Vue.component('sanctuary-card', require('./components/SanctuaryCard.vue').default);
+Vue.component('sanctuary-listings', require('./components/SanctuaryListings.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

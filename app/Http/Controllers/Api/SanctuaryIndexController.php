@@ -1,21 +1,24 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use App\Domain\Models\Sanctuary;
 use App\Domain\Services\PostcodeLookup;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
-class SearchController
+class SanctuaryIndexController
 {
-    public function index(Request $request)
+    public function __invoke(Request $request)
     {
         $location = PostcodeLookup::make($request->get('q'));
+
         $results = Sanctuary::nearPostcode($location, $request->get('radius'));
 
-        return view('search')->with([
-            'sanctuaries' => $results->paginate(30)
-        ]);
+        if ($request->input('vegan') == 'true') {
+            $results->vegan();
+        }
+
+        return $results->paginate(30);
     }
 }

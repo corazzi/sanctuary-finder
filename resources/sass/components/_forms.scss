@@ -1,34 +1,44 @@
-form {
-    input {
-        @apply border rounded-full;
+input {
+    @apply border rounded-full;
 
-        &:focus {
-            @apply border-green-500 outline-none;
-        }
+    &:focus {
+        @apply border-green-500 outline-none;
+    }
+}
+
+button {
+    @apply bg-green-500 text-white font-bold py-2 px-8 rounded-lg;
+
+    &:hover {
+        @apply bg-green-600;
+    }
+}
+
+input[type="checkbox"] {
+    @apply appearance-none rounded-lg bg-white w-5 h-5 border-2 border-green-500;
+
+    &:active,
+    &:focus {
+        @apply outline-none border-green-700;
     }
 
-    button {
-        @apply bg-green-500 text-white font-bold py-2 px-8 rounded-lg;
-
-        &:hover {
-            @apply bg-green-600;
-        }
+    &:checked {
+        @apply bg-green-500;
     }
+}
 
-    input[type="checkbox"] {
-        @apply appearance-none rounded-lg bg-white w-5 h-5 border-2 border-green-500;
+select {
+    @apply appearance-none border rounded-lg py-2 pl-4 pr-8 -mt-2 bg-white;
+}
 
-        &:active,
-        &:focus {
-            @apply outline-none border-green-700;
-        }
+.toggle__dot {
+    cursor: pointer;
+    top: -.25rem;
+    left: -.25rem;
+    transition: all 0.3s ease-in-out;
+}
 
-        &:checked {
-            @apply bg-green-500;
-        }
-    }
-
-    select {
-        @apply appearance-none border rounded-lg py-2 pl-4 pr-8 -mt-2 bg-white;
-    }
+input:checked ~ .toggle__dot {
+    transform: translateX(100%);
+    background-color: #48bb78;
 }
