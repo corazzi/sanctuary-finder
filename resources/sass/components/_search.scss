@@ -1,0 +1,26 @@
+.search-header {
+    @apply mx-auto text-white px-4 pt-10 pb-20 bg-cover shadow-xl;
+
+    background-image: url(../../img/spotted-hen-in-grass.jpg);
+    background-position: 0 50%;
+    text-shadow: 2px 2px 2px #222222;
+
+    form {
+        button {
+            background-image: url('../../img/search.svg');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-color: transparent;
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            right: -5px;
+            top: 5px;
+
+            &:active,
+            &:focus {
+                outline: none;
+            }
+        }
+    }
+}

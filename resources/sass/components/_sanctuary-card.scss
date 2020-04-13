@@ -1,0 +1,17 @@
+.sanctuary-card {
+    @apply border rounded-lg m-2;
+
+    max-width: 380px;
+
+    header {
+        @apply rounded-tl-lg rounded-tr-lg bg-cover;
+
+        height: 150px;
+    }
+
+    .vegan {
+        @apply absolute bg-cover h-8 w-8;
+        background-image: url('../../img/vegan.svg');
+        right: 1rem;
+    }
+}

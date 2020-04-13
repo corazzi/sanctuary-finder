@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+
+* {
+    font-family: Nunito, sans-serif;
+}
+
+.container {
+    margin: 0 auto;
+    max-width: 1200px;
+}
+
+@import './components/forms';
+@import './components/sanctuary-card';
+@import './components/search';
